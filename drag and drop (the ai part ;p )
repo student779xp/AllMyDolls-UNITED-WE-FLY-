@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      background: #f0f0f0;
+      font-family: sans-serif;
+    }
+
+    #game-area {
+      width: 600px;
+      height: 600px;
+      margin: auto;
+      position: relative;
+      border: 2px solid #333;
+      background: white;
+    }
+
+    #base-doll {
+      position: absolute;
+      left: 200px;
+      top: 100px;
+      width: 200px;
+      z-index: 1;
+    }
+
+    .item {
+      width: 120px;
+      cursor: grab;
+      position: absolute;
+      z-index: 5;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1 style="text-align:center;">My Dress-Up Game</h1>
+
+<div id="game-area">
+  <!-- Base doll -->
+  <img id="base-doll" src="BASE_DOLL_IMAGE.png">
+
+  <!-- Clothing items -->
+  <img class="item" src="SHIRT.png" style="left:20px; top:20px;">
+  <img class="item" src="PANTS.png" style="left:20px; top:160px;">
+  <img class="item" src="HAIR.png" style="left:20px; top:300px;">
+</div>
+
+<script>
+  // Simple drag and drop
+  const items = document.querySelectorAll('.item');
+
+  items.forEach(item => {
+    item.onmousedown = function(e) {
+      let shiftX = e.clientX - item.getBoundingClientRect().left;
+      let shiftY = e.clientY - item.getBoundingClientRect().top;
+
+      function moveAt(pageX, pageY) {
+        item.style.left = pageX - shiftX + 'px';
+        item.style.top = pageY - shiftY + 'px';
+      }
+
+      function onMouseMove(e) {
+        moveAt(e.pageX, e.pageY);
+      }
+
+      document.addEventListener('mousemove', onMouseMove);
+
+      item.onmouseup = function() {
+        document.removeEventListener('mousemove', onMouseMove);
+        item.onmouseup = null;
+      };
+    };
+
+    item.ondragstart = () => false;
+  });
+</script>
+
+</body>
+</html>
